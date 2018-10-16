@@ -25,7 +25,7 @@ public class Player_Movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Debug.Log(grounded);
+       
 
         float horizontal = Input.GetAxis("Horizontal");
         rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
@@ -50,6 +50,11 @@ public class Player_Movement : MonoBehaviour {
         
     }
 
-     
+    void OnBecameInvisible()
+    {
+        //Make the game over menu appear
+    }
+
+
 
 }
