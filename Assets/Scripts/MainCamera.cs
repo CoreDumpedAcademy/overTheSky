@@ -7,12 +7,13 @@ public class MainCamera : MonoBehaviour {
     public GameObject follow;
     public Vector2 maxCamPos;
     public Vector2 minCamPos;
-    public float smoothTime;
-    public float counter = 5;
-  
 
+
+    public float smoothTime;
+    public float counter = 5f;
     private Vector2 velocity;
     private float moveSpeed = 5.0f;
+
     
 
     // Use this for initialization
@@ -31,11 +32,24 @@ public class MainCamera : MonoBehaviour {
             follow.transform.position.y, ref velocity.y, smoothTime);
 
         counter -= Time.deltaTime;
-        if (counter < 0)
+
+        if (posY >= minCamPos.y)
         {
-            minCamPos.y = minCamPos.y + 0.01f;
-            counter = 0.025f;
-            Debug.Log(minCamPos.y);
+
+            minCamPos.y = minCamPos.y + 0.02f;
+            counter = 0.0025f;
+            
+
+        }
+        else
+        {
+            
+            if (counter < 0)
+            {
+                minCamPos.y = minCamPos.y + 0.01f;
+                counter = 0.025f;
+                
+            }
         }
 
         transform.position = new Vector3(
