@@ -12,7 +12,7 @@ public class MainCamera : MonoBehaviour {
     public float smoothTime;
     public float counter = 5f;
     private Vector2 velocity;
-    public float posX, posY;
+    public static float posX, posY;
 
     
 
