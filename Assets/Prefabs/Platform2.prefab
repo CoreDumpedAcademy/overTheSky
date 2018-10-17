@@ -21,9 +21,10 @@ GameObject:
   - component: {fileID: 4929686596587832}
   - component: {fileID: 212464357499804248}
   - component: {fileID: 61203689785963714}
+  - component: {fileID: 114967204095339986}
   m_Layer: 0
   m_Name: Platform2
-  m_TagString: Untagged
+  m_TagString: Enviroment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,6 +114,17 @@ EdgeCollider2D:
   m_Points:
   - {x: -0.38272414, y: 0.38186175}
   - {x: 0.3913053, y: 0.3818617}
+--- !u!114 &114967204095339986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1539638705485900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0caf579958058684097f3343ec6c40f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212464357499804248
 SpriteRenderer:
   m_ObjectHideFlags: 1

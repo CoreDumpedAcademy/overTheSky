@@ -36,7 +36,7 @@ public class MainCamera : MonoBehaviour {
         if (posY >= minCamPos.y)
         {
 
-            minCamPos.y = minCamPos.y + 0.04f;
+            minCamPos.y = minCamPos.y + 0.05f;
             counter = 0.0000025f;
             
 

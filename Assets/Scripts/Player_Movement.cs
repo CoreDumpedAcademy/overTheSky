@@ -48,13 +48,13 @@ public class Player_Movement : MonoBehaviour {
             transform.localScale = new Vector3(-3f, 3f, 3f);
         }
 
-        if (transform.position.x <= -11.5f)
+        if (transform.position.x <= -11f)
         {
-            transform.position = new Vector3(11f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(10.5f, transform.position.y+1f, transform.position.z);
         }
-        else if (transform.position.x >= 11.5f)
+        else if (transform.position.x >= 11f)
         {
-            transform.position = new Vector3(-11f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-10.5f, transform.position.y+1f, transform.position.z);
         }
     }
 
