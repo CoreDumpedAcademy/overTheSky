@@ -31,12 +31,12 @@ public class Player_Movement : MonoBehaviour {
         float horizontal = Input.GetAxis("Horizontal");
         rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            if (grounded == true)
-                rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
 
+        if (grounded == true)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
         }
+        
 
         if (horizontal > 0.1f)
         {
