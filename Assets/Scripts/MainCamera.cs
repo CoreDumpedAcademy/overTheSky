@@ -12,7 +12,7 @@ public class MainCamera : MonoBehaviour {
     public float smoothTime;
     public float counter = 5f;
     private Vector2 velocity;
-    private float moveSpeed = 5.0f;
+    public float posX, posY;
 
     
 
@@ -26,9 +26,9 @@ public class MainCamera : MonoBehaviour {
     void FixedUpdate()
     {
         
-        float posX = Mathf.SmoothDamp(transform.position.x,
+         posX = Mathf.SmoothDamp(transform.position.x,
             follow.transform.position.x, ref velocity.x, smoothTime);
-        float posY = Mathf.SmoothDamp(transform.position.y,
+         posY = Mathf.SmoothDamp(transform.position.y,
             follow.transform.position.y, ref velocity.y, smoothTime);
 
         counter -= Time.deltaTime;
@@ -36,8 +36,8 @@ public class MainCamera : MonoBehaviour {
         if (posY >= minCamPos.y)
         {
 
-            minCamPos.y = minCamPos.y + 0.02f;
-            counter = 0.0025f;
+            minCamPos.y = minCamPos.y + 0.04f;
+            counter = 0.0000025f;
             
 
         }

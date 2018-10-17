@@ -11,7 +11,7 @@ public class Player_Movement : MonoBehaviour {
 
 
 
-    private Transform trans;
+
     private Rigidbody2D rb2d;
     
 
@@ -19,7 +19,7 @@ public class Player_Movement : MonoBehaviour {
     void Start () {
         
         rb2d = GetComponent<Rigidbody2D>();
-        trans = GetComponent<Transform>();
+        
         
 	}
 
@@ -48,13 +48,13 @@ public class Player_Movement : MonoBehaviour {
             transform.localScale = new Vector3(-3f, 3f, 3f);
         }
 
-        if (transform.position.x <= -11f)
-        {
-            transform.position = new Vector3(-11f, transform.position.y, transform.position.z);
-        }
-        else if (transform.position.x >= 11f)
+        if (transform.position.x <= -11.5f)
         {
             transform.position = new Vector3(11f, transform.position.y, transform.position.z);
+        }
+        else if (transform.position.x >= 11.5f)
+        {
+            transform.position = new Vector3(-11f, transform.position.y, transform.position.z);
         }
     }
 
