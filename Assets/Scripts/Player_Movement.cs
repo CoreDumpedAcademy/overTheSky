@@ -8,12 +8,12 @@ public class Player_Movement : MonoBehaviour {
     public float speed = 6f;
     public float jumpPower = 6f;
     public bool grounded;
-    public int lifes = 3;
-    private bool alive = true; 
+
 
 
 
     private Rigidbody2D rb2d;
+    
 
     // Use this for initialization
     void Start () {
@@ -31,12 +31,7 @@ public class Player_Movement : MonoBehaviour {
         float horizontal = Input.GetAxis("Horizontal");
         rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
 
-        //Debug.Log(lifes);
 
-        if (lifes <= 0){
-          alive = false;
-          Debug.Log(alive);
-        }
         if (grounded == true)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
