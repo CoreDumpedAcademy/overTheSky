@@ -8,6 +8,7 @@ public class Player_Movement : MonoBehaviour {
     public float speed = 6f;
     public float jumpPower = 6f;
     public bool grounded;
+    public static bool isDead = false;
 
 
 
@@ -19,7 +20,6 @@ public class Player_Movement : MonoBehaviour {
     void Start () {
         
         rb2d = GetComponent<Rigidbody2D>();
-        
         
 	}
 
@@ -63,9 +63,8 @@ public class Player_Movement : MonoBehaviour {
 
     void OnBecameInvisible()
     {
-        //Make the game over menu appear
+            isDead = true;
+            gameObject.SetActive(false);
+            Debug.Log("Moñeco");
     }
-
-
-
 }
