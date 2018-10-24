@@ -8,6 +8,7 @@ public class Player_Movement : MonoBehaviour {
     public float speed = 6f;
     public float jumpPower = 6f;
     public bool grounded;
+    public int lifes = 3;
     public static bool isDead = false;
 
 
@@ -31,7 +32,11 @@ public class Player_Movement : MonoBehaviour {
         float horizontal = Input.GetAxis("Horizontal");
         rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
 
-
+        if (lifes <= 0)
+        {
+            isDead = true;
+            Debug.Log("Killed");
+        }
         if (grounded == true)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
