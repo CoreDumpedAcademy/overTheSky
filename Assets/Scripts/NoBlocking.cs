@@ -19,6 +19,9 @@ public class NoBlocking : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if (transform.position.y <= MainCamera.posY - 10){
+            Destroy(gameObject);
+        }
         
 
     }

@@ -7,9 +7,8 @@ public class PauseMenu : MonoBehaviour {
 
     public static bool GameIsPaused = false;
     public static bool PlayerIsDead = false;
-    public GameObject PauseMenuUI; 
+    public GameObject PauseMenuUI;
     public GameObject DeadMenuUI;
-
 
 
     // Update is called once per frame
@@ -64,6 +63,7 @@ public class PauseMenu : MonoBehaviour {
         PlayerIsDead = true;
     }
     public void Restart(){
+        PlayerIsDead = false;
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         DeadMenuUI.SetActive(false);
     }

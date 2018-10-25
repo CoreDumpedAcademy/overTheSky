@@ -6,6 +6,7 @@ public class BasicEnemy : MonoBehaviour
 {
     public static bool killActive;
     public float killActiveTime = 3f;
+    public static float damage = 1;
 
     private float timer;
 

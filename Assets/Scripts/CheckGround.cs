@@ -17,28 +17,24 @@ public class CheckGround : MonoBehaviour {
     {
         if (col.gameObject.tag == "Enemy")
         {
-            player.grounded = true;
             if (BasicEnemy.killActive == true)
             {
-                player.lifes -= 1;
+                player.lifes -= BasicEnemy.damage;
             }
+            player.grounded = true;
+
         }
     }
 
     void OnCollisionStay2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Floor")
-        {
-            player.grounded = true;
-        }
+        player.grounded |= col.gameObject.tag == "Floor";
+        player.grounded &= col.gameObject.tag != "FlyingEnemy";
     }
 
      void OnCollisionExit2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Floor" || col.gameObject.tag == "Enemy")
-        {
-            player.grounded = false;
-        }
+        player.grounded &= (col.gameObject.tag != "Floor" && col.gameObject.tag != "Enemy" && col.gameObject.tag != "FlyingEnemy" );
 
         
     }

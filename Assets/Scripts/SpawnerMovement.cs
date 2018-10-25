@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnerMovement : MonoBehaviour {
 
 
-    public float counter1 = 0f;
+    public float counter1;
     public float camSpeed = 0.5f;
 
     // Use this for initialization

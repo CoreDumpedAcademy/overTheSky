@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Movement : MonoBehaviour {
+public class Player_Movement : MonoBehaviour
+{
 
 
     public float speed = 6f;
     public float jumpPower = 6f;
     public bool grounded;
-    public int lifes = 3;
-    public static bool isDead = false;
-    
+    public float lifes = 3f;
+    public static bool isDead;
+
 
 
 
@@ -20,15 +21,17 @@ public class Player_Movement : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
-        
+    void Start()
+    {
+
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
 
 
@@ -44,7 +47,7 @@ public class Player_Movement : MonoBehaviour {
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
         }
-        
+
 
         if (horizontal > 0.1f)
         {
@@ -58,11 +61,11 @@ public class Player_Movement : MonoBehaviour {
 
         if (transform.position.x <= -11f)
         {
-            transform.position = new Vector3(10.5f, transform.position.y+1f, transform.position.z);
+            transform.position = new Vector3(10.5f, transform.position.y + 1f, transform.position.z);
         }
         else if (transform.position.x >= 11f)
         {
-            transform.position = new Vector3(-10.5f, transform.position.y+1f, transform.position.z);
+            transform.position = new Vector3(-10.5f, transform.position.y + 1f, transform.position.z);
         }
 
         anim.SetFloat("SpeedY", rb2d.velocity.y);
@@ -71,12 +74,26 @@ public class Player_Movement : MonoBehaviour {
         {
             Die();
         }
+        /*if (PauseMenu.revive2 == true)
+        {
+            gameObject.SetActive(true);
+        }*/
     }
 
     void Die()
     {
-            isDead = true;
-            gameObject.SetActive(false);
-            Debug.Log("Moñeco");
+        isDead = true;
+        gameObject.SetActive(false);
+        Debug.Log("Moñeco");
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "FlyingEnemy")
+        {
+            lifes -= MovingEnemy.damage;
+            grounded = true;
+            Debug.Log("auch");
+        }
     }
 }

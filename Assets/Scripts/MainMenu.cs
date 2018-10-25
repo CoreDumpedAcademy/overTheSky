@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    public static bool revive = false;
+    public static bool revive;
 
     public void PlayGame()
     {
