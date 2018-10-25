@@ -60,12 +60,18 @@ public class BasicEnemy : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D col)
     {
-        float timer = 3f;
-        timer = timer - Time.deltaTime;
-
-        if (timer <= 0 && col.gameObject.tag == "Enviroment")
+        if (col.gameObject.tag == "Enviroment")
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z);
+            if (transform.position.x <= 0)
+            {
+                transform.position = new Vector3(transform.position.x + 4f, transform.position.y, transform.position.z);
+                Debug.Log(transform.position.x);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x - 4f, transform.position.y, transform.position.z);
+            }
+            Debug.Log("hola");
         }
     }
- }
+}

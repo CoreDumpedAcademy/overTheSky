@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingEnemy : MonoBehaviour {
+public class MovingEnemy : MonoBehaviour
+{
 
     public static bool killActive = true;
     public float enemyVelocity = 0.1f;
@@ -16,24 +17,29 @@ public class MovingEnemy : MonoBehaviour {
     private SpriteRenderer rend;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         rend = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         CalcuateNewMovementVector();
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
+    void FixedUpdate()
+    {
         transform.Translate(movementPerSecond);
         if (transform.position.x <= -10f || transform.position.x >= 10f)
-            SwitchVector();
+           
+             
+        SwitchVector();
         if (transform.position.y <= MainCamera.posY - 10)
         {
             Destroy(gameObject);
         }
     }
 
-    void SwitchVector () {
+    void SwitchVector()
+    {
         movementPerSecond = -movementPerSecond;
         xDir = -xDir;
         transform.localScale = new Vector3(xDir * 4f, 4f, 1f);
@@ -53,17 +59,27 @@ public class MovingEnemy : MonoBehaviour {
         if (col.gameObject.tag == "Enviroment")
         {
             SwitchVector();
+
+
         }
     }
 
     void OnCollisionStay2D(Collision2D col)
     {
-        float timer = 3f;
-        timer = timer - Time.deltaTime;
-
-        if (timer <= 0 && col.gameObject.tag == "Enviroment")
+        if (col.gameObject.tag == "Enviroment")
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z);
+            SwitchVector();
+
+            if (transform.position.x <= 0)
+            {
+                transform.position = new Vector3(transform.position.x + 4f, transform.position.y, transform.position.z);
+                Debug.Log(transform.position.x);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x - 4f, transform.position.y, transform.position.z);
+            }
+            Debug.Log("hola");
         }
     }
 }

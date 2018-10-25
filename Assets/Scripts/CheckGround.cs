@@ -28,12 +28,14 @@ public class CheckGround : MonoBehaviour {
     void OnCollisionStay2D(Collision2D col)
     {
         float timer = 3f;
-        timer = timer - Time.deltaTime;
-
-        if(timer <= 0 && col.gameObject.tag == "Enviroment")
+        if (timer <= 0 && col.gameObject.tag == "Enviroment")
         {
+            
+            timer = timer - Time.deltaTime;
             transform.position = new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z);
+            
         }
+        timer = 3f;
         player.grounded |= col.gameObject.tag == "Floor";
         player.grounded &= col.gameObject.tag != "FlyingEnemy";
     }
