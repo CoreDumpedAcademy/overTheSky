@@ -55,4 +55,15 @@ public class MovingEnemy : MonoBehaviour {
             SwitchVector();
         }
     }
+
+    void OnCollisionStay2D(Collision2D col)
+    {
+        float timer = 3f;
+        timer = timer - Time.deltaTime;
+
+        if (timer <= 0 && col.gameObject.tag == "Enviroment")
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z);
+        }
+    }
 }
