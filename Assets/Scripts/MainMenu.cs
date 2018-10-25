@@ -9,9 +9,12 @@ public class MainMenu : MonoBehaviour {
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadSceneAsync("SampleScene");
         Player_Movement.isDead = false;
+        PauseMenu.PlayerIsDead = false;
+        PauseMenu.menuSelector = false;
         revive = true;
+        Time.timeScale = 1f;
     }
 
     public void QuitGame()
