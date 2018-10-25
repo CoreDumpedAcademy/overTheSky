@@ -41,6 +41,7 @@ public class Player_Movement : MonoBehaviour
         if (lifes <= 0)
         {
             isDead = true;
+            gameObject.SetActive(false);
             Debug.Log("Killed");
         }
         if (grounded == true)
