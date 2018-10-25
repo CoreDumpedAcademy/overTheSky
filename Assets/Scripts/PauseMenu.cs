@@ -9,12 +9,13 @@ public class PauseMenu : MonoBehaviour {
     public static bool PlayerIsDead = false;
     public GameObject PauseMenuUI; 
     public GameObject DeadMenuUI;
+    public static bool menuSelector = false; 
 
 
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && menuSelector==false)
         {
             if (GameIsPaused)
             {
@@ -30,6 +31,7 @@ public class PauseMenu : MonoBehaviour {
         {
             PauseMenuUI.SetActive(false);
             DeadMenuUI.SetActive(true);
+            menuSelector = true;
             if (PlayerIsDead)
             {
                 Restart();
@@ -49,6 +51,7 @@ public class PauseMenu : MonoBehaviour {
         PauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+        PlayerIsDead = false;
     }
 
     void Pause()
@@ -66,6 +69,10 @@ public class PauseMenu : MonoBehaviour {
     public void Restart(){
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         DeadMenuUI.SetActive(false);
+        PlayerIsDead = false;
+        GameIsPaused = false;
+        menuSelector = false;
+        Time.timeScale = 1f;
     }
 
     public void LoadMenu()
