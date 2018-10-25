@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class Player_Movement : MonoBehaviour {
 
-    
+
     public float speed = 6f;
     public float jumpPower = 6f;
     public bool grounded;
     public int lifes = 3;
     public static bool isDead = false;
+    
 
 
 
 
-    private Rigidbody2D rb2d;
+    Rigidbody2D rb2d;
     private Animator anim;
 
 
@@ -66,21 +67,11 @@ public class Player_Movement : MonoBehaviour {
 
         anim.SetFloat("SpeedY", rb2d.velocity.y);
 
-        if (transform.position.y <= MainCamera.posY - 10f)
+        if (transform.position.y <= MainCamera.posY - 8f)
         {
             Die();
         }
-        if (MainMenu.revive == true)
-        {
-            isDead = false;
-            gameObject.SetActive(true);
-            MainMenu.revive = false;
-        }
-
     }
-
-
-
 
     void Die()
     {
