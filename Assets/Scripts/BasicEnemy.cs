@@ -34,6 +34,10 @@ public class BasicEnemy : MonoBehaviour
     void Update()
     {
         Timer();
+        if (transform.position.y <= MainCamera.posY - 10)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Timer()

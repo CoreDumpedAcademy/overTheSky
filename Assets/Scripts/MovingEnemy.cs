@@ -27,7 +27,11 @@ public class MovingEnemy : MonoBehaviour {
         transform.Translate(movementPerSecond);
         if (transform.position.x <= -10f || transform.position.x >= 10f)
             SwitchVector();
-	}
+        if (transform.position.y <= MainCamera.posY - 10)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void SwitchVector () {
         movementPerSecond = -movementPerSecond;
