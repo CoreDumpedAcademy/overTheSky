@@ -18,12 +18,12 @@ public class Player_Movement : MonoBehaviour
 
     Rigidbody2D rb2d;
     private Animator anim;
-
+    private SpriteRenderer spriteRend;
 
     // Use this for initialization
     void Start()
     {
-
+        spriteRend = GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
@@ -89,11 +89,16 @@ public class Player_Movement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
+        if (col.gameObject.tag == "Enemy" && BasicEnemy.killActive)
+        {
+            anim.SetTrigger("PlayerDamaged");
+            lifes -= BasicEnemy.damage;
+        }
         if (col.gameObject.tag == "FlyingEnemy")
         {
+            anim.SetTrigger("PlayerDamaged");
             lifes -= MovingEnemy.damage;
-            grounded = true;
-            Debug.Log("auch");
+
         }
     }
 }

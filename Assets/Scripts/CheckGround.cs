@@ -17,12 +17,11 @@ public class CheckGround : MonoBehaviour {
     {
         if (col.gameObject.tag == "Enemy")
         {
-            if (BasicEnemy.killActive == true)
-            {
-                player.lifes -= BasicEnemy.damage;
-            }
             player.grounded = true;
-
+        }
+        if (col.gameObject.tag == "FlyingEnemy")
+        {
+            player.grounded = true;
         }
     }
 
