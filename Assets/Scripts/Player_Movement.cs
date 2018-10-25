@@ -61,12 +61,24 @@ public class Player_Movement : MonoBehaviour {
         {
             transform.position = new Vector3(-10.5f, transform.position.y+1f, transform.position.z);
         }
+
+        if (transform.position.y <= MainCamera.posY - 10f)
+        {
+            Die();
+        }
+        if (MainMenu.revive == true)
+        {
+            isDead = false;
+            gameObject.SetActive(true);
+            MainMenu.revive = false;
+        }
+
     }
 
 
 
 
-    void OnBecameInvisible()
+    void Die()
     {
             isDead = true;
             gameObject.SetActive(false);

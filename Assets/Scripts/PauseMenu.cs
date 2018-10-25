@@ -21,6 +21,7 @@ public class PauseMenu : MonoBehaviour {
                 Pause();
             }
         }
+        Player_Movement.isDead = false;
 	}
 
     public void Resume()
