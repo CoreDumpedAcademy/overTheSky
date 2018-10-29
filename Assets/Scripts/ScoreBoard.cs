@@ -17,7 +17,10 @@ public class ScoreBoard : MonoBehaviour {
     public static int scoreCount;
 
 
-    
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
     // Use this for initialization
     void Start () {
 
