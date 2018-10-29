@@ -6,6 +6,22 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour {
 
     public static bool revive;
+    private int gs;
+
+    void Awake()
+    {
+        
+        
+            
+                
+          
+    }
+
+    void Start()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("epicidad");
+    }
 
     public void PlayGame()
     {
@@ -14,7 +30,7 @@ public class MainMenu : MonoBehaviour {
         PauseMenu.PlayerIsDead = false;
         PauseMenu.menuSelector = false;
         revive = true;
-        Time.timeScale = 1f;
+        
     }
 
     public void QuitGame()

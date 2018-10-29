@@ -7,6 +7,8 @@ public class CheckGround : MonoBehaviour {
 
     private Player_Movement player;
 
+    
+
 	// Use this for initialization
 	void Start () {
 

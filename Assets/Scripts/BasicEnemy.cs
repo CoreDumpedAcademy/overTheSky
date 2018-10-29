@@ -38,6 +38,7 @@ public class BasicEnemy : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     void Timer()
@@ -60,18 +61,6 @@ public class BasicEnemy : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Enviroment")
-        {
-            if (transform.position.x <= 0)
-            {
-                transform.position = new Vector3(transform.position.x + 4f, transform.position.y, transform.position.z);
-                Debug.Log(transform.position.x);
-            }
-            else
-            {
-                transform.position = new Vector3(transform.position.x - 4f, transform.position.y, transform.position.z);
-            }
-            Debug.Log("hola");
-        }
+        
     }
 }

@@ -11,8 +11,10 @@ public class Player_Movement : MonoBehaviour
     public bool grounded;
     public float lifes = 3f;
     public static bool isDead;
-
-
+    public static int scoreValue;
+    private int heigthDetect;
+    public static int scores;
+    public static bool toAddScore=false;
 
 
 
@@ -26,6 +28,7 @@ public class Player_Movement : MonoBehaviour
         spriteRend = GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        scoreValue = (int)transform.position.y + 3;
 
     }
 
@@ -40,9 +43,10 @@ public class Player_Movement : MonoBehaviour
 
         if (lifes <= 0)
         {
-            isDead = true;
-            gameObject.SetActive(false);
+            Die();
+            
             Debug.Log("Killed");
+            lifes = 10;
         }
         if (grounded == true)
         {
@@ -75,15 +79,26 @@ public class Player_Movement : MonoBehaviour
         {
             Die();
         }
-        /*if (PauseMenu.revive2 == true)
+
+        if (transform.position.y >= 0)
         {
-            gameObject.SetActive(true);
-        }*/
+            
+            if (PauseMenu.scoreText < transform.position.y)
+            {
+                scoreValue = (int)transform.position.y;
+            }
+            
+
+        }
+
     }
 
     void Die()
     {
+        scores = scoreValue;
+        toAddScore = true;
         isDead = true;
+        PauseMenu.addScore = true;
         gameObject.SetActive(false);
         Debug.Log("Moñeco");
     }

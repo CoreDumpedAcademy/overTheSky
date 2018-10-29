@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
@@ -9,16 +10,30 @@ public class PauseMenu : MonoBehaviour {
     public static bool PlayerIsDead = false;
     public GameObject PauseMenuUI;
     public GameObject DeadMenuUI;
-    public static bool menuSelector = false; 
+    public GameObject ScoreboardUI;
+    public Text score;
+    public static bool menuSelector = false;
+    public static float scoreText;
+    public static bool addScore = false;
+    private int whichMenu;
+    private bool onScore = false;
 
+    void Start()
+    {
+        score = GetComponentInChildren<Text>();
+        GameIsPaused = false;
+    ScoreboardUI.SetActive(true);
+        ScoreboardUI.SetActive(false);
 
-    // Update is called once per frame
+    }
     void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape) && menuSelector==false)
+        if (Input.GetKeyDown(KeyCode.Escape) && menuSelector==false && onScore == false)
         {
+            whichMenu = 1;
             if (GameIsPaused)
             {
                 Resume();
+                whichMenu = 0;
             }
             else
             {
@@ -31,9 +46,13 @@ public class PauseMenu : MonoBehaviour {
             PauseMenuUI.SetActive(false);
             DeadMenuUI.SetActive(true);
             menuSelector = true;
+            whichMenu = 2;
+            addScore = true;
             if (PlayerIsDead)
             {
                 Restart();
+                whichMenu = 0;
+                Debug.Log(ScoreBoard.scoreCount);
             }
             else
             {
@@ -42,8 +61,11 @@ public class PauseMenu : MonoBehaviour {
         }
         Player_Movement.isDead = false;
 
+        
+        score.text = "" + Player_Movement.scoreValue;
+        scoreText = int.Parse(score.text);
 
-	}
+    }
 
     public void Resume()
     {
@@ -77,7 +99,9 @@ public class PauseMenu : MonoBehaviour {
 
     public void LoadMenu()
     {
-        SceneManager.LoadScene("Menu"); 
+        
+        SceneManager.LoadScene("Menu");
+        Time.timeScale = 1f;
     }
 
     public void QuitGame()
@@ -85,5 +109,28 @@ public class PauseMenu : MonoBehaviour {
         Debug.Log("Quitting game");
         Application.Quit();
     
+    }
+
+    public void ToScoreboard()
+    {
+        onScore = true;
+        DeadMenuUI.SetActive(false);
+        PauseMenuUI.SetActive(false);
+        ScoreboardUI.SetActive(true);       
+    }
+
+    public void BackToMenu()
+    {
+        if (whichMenu == 1)
+        {
+            onScore = false;
+            ScoreboardUI.SetActive(false);
+            PauseMenuUI.SetActive(true);
+        }
+        else if (whichMenu == 2)
+        {
+            ScoreboardUI.SetActive(false);
+            DeadMenuUI.SetActive(true);
+        }
     }
 }
