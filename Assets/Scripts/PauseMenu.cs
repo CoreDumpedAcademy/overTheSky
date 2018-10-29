@@ -51,6 +51,7 @@ public class PauseMenu : MonoBehaviour {
             if (PlayerIsDead)
             {
                 Restart();
+                DeadMenuUI.SetActive(false);
                 whichMenu = 0;
                 Debug.Log(ScoreBoard.scoreCount);
             }
