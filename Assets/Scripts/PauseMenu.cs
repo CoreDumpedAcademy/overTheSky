@@ -59,6 +59,8 @@ public class PauseMenu : MonoBehaviour {
             {
                 DeadPause();
             }
+
+            
         }
         Player_Movement.isDead = false;
 
@@ -90,12 +92,14 @@ public class PauseMenu : MonoBehaviour {
     }
     public void Restart(){
         PlayerIsDead = false;
+        DeadMenuUI.SetActive(false);
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         DeadMenuUI.SetActive(false);
         PlayerIsDead = false;
         GameIsPaused = false;
         menuSelector = false;
         Time.timeScale = 1f;
+        DeadMenuUI.SetActive(false);
     }
 
     public void LoadMenu()
