@@ -10,16 +10,12 @@ public class MainMenu : MonoBehaviour {
 
     void Awake()
     {
-        
-        
-            
-                
-          
+               
     }
 
     void Start()
     {
-        PlayerPrefs.DeleteAll();
+        
         Debug.Log("epicidad");
     }
 
