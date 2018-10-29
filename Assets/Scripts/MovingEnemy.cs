@@ -8,6 +8,7 @@ public class MovingEnemy : MonoBehaviour
     public static bool killActive = true;
     public float enemyVelocity = 0.1f;
     public static float damage = 1.5f;
+    private float counter=3f;
 
     private int xDir;
     private Vector2 movementDirection;
@@ -87,16 +88,19 @@ public class MovingEnemy : MonoBehaviour
     {
         if (col.gameObject.tag == "Enviroment" || col.gameObject.tag == "Floor")
         {
-
-            if (transform.position.x < 0)
+            counter = counter - Time.deltaTime;
+            if (counter <= 0)
             {
-                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
+                if (transform.position.x < 0)
+                {
+                    transform.position = new Vector3(transform.position.x + 4f, transform.position.y, transform.position.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(transform.position.x - 4f, transform.position.y, transform.position.z);
+                }
+                counter = 3f;
             }
-            else
-            {
-                transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
-            }
-
             SwitchVector();
 
 
