@@ -43,10 +43,10 @@ public class BasicEnemy : MonoBehaviour
 
     void Timer()
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        
+        if (Player_Movement.timer <= 0)
         {
-            killActive = !killActive;
+            
             if (killActive)
             {
                 anim.SetTrigger("Spikes");
@@ -55,7 +55,7 @@ public class BasicEnemy : MonoBehaviour
             {
                 anim.SetTrigger("Idle");
             }
-            timer = killActiveTime;
+            
         }
     }
 

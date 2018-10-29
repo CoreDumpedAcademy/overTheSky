@@ -15,6 +15,7 @@ public class Player_Movement : MonoBehaviour
     private int heigthDetect;
     public static int scores;
     public static bool toAddScore=false;
+    public static float timer = 3f;
 
 
 
@@ -36,7 +37,12 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
 
-
+        timer = timer - Time.deltaTime;
+        if (timer <= 0)
+        {
+            BasicEnemy.killActive = !BasicEnemy.killActive;
+            timer = 3f;
+        }
 
         float horizontal = Input.GetAxis("Horizontal");
         rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
