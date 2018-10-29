@@ -106,6 +106,163 @@ public class Player_Movement : MonoBehaviour
         isDead = true;
         PauseMenu.addScore = true;
         gameObject.SetActive(false);
+        if (Player_Movement.toAddScore == true)
+        {
+            PauseMenu.addScore = true;
+            Player_Movement.toAddScore = false;
+        }
+
+        ScoreBoard.scoreV1 = PlayerPrefs.GetInt("Score1", 0);
+        ScoreBoard.scoreV2 = PlayerPrefs.GetInt("Score2", 0);
+        ScoreBoard.scoreV3 = PlayerPrefs.GetInt("Score3", 0);
+        ScoreBoard.scoreV4 = PlayerPrefs.GetInt("Score4", 0);
+        ScoreBoard.scoreV5 = PlayerPrefs.GetInt("Score5", 0);
+
+        if (PauseMenu.addScore == true)
+        {
+            ScoreBoard.scoreCount = PlayerPrefs.GetInt("scoreCount", 0);
+
+
+            switch (ScoreBoard.scoreCount)
+            {
+                case 0:
+                    PlayerPrefs.SetInt("Score1", Player_Movement.scores);
+
+                    break;
+
+                case 1:
+
+                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
+                    {
+                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
+                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
+                    }
+                    else
+                    {
+                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
+
+                    }
+
+                    break;
+
+                case 2:
+
+                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
+                    {
+
+                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
+                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
+                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores >= ScoreBoard.scoreV1)
+                    {
+
+                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
+                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV1)
+                    {
+                        PlayerPrefs.SetInt("Score3", Player_Movement.scores);
+                    }
+
+                    break;
+
+                case 3:
+
+                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
+                    {
+
+                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
+                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
+                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
+                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores >= ScoreBoard.scoreV2)
+                    {
+                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
+                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
+                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores >= ScoreBoard.scoreV3)
+                    {
+                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
+                        PlayerPrefs.SetInt("Score3", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3)
+                    {
+                        PlayerPrefs.SetInt("Score4", Player_Movement.scores);
+                    }
+
+
+
+
+                    break;
+
+                case 4:
+
+                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
+                    {
+
+                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
+                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
+                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
+                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
+                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores >= ScoreBoard.scoreV1)
+                    {
+
+                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
+                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
+                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
+                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores >= ScoreBoard.scoreV3)
+                    {
+                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
+                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
+                        PlayerPrefs.SetInt("Score3", Player_Movement.scores);
+
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3 && Player_Movement.scores >= ScoreBoard.scoreV4)
+                    {
+                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
+                        PlayerPrefs.SetInt("Score4", Player_Movement.scores);
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3 && Player_Movement.scores < ScoreBoard.scoreV4 && Player_Movement.scores > ScoreBoard.scoreV5)
+                    {
+                        PlayerPrefs.SetInt("Score5", Player_Movement.scores);
+                    }
+                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3 && Player_Movement.scores < ScoreBoard.scoreV4 && Player_Movement.scores < ScoreBoard.scoreV5)
+                    {
+
+                    }
+
+
+                    ScoreBoard.scoreCount = 3;
+                    break;
+
+            }
+            ScoreBoard.scoreCount = ScoreBoard.scoreCount + 1;
+            PlayerPrefs.SetInt("scoreCount", ScoreBoard.scoreCount);
+
+            Debug.Log("Ayer");
+
+            ScoreBoard.scoreV1 = PlayerPrefs.GetInt("Score1", 0);
+            ScoreBoard.scoreV2 = PlayerPrefs.GetInt("Score2", 0);
+            ScoreBoard.scoreV3 = PlayerPrefs.GetInt("Score3", 0);
+            ScoreBoard.scoreV4 = PlayerPrefs.GetInt("Score4", 0);
+            ScoreBoard.scoreV5 = PlayerPrefs.GetInt("Score5", 0);
+
+            PauseMenu.addScore = false;
+        }
         Debug.Log("Moñeco");
     }
 
