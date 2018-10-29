@@ -252,7 +252,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4508671383449874, guid: 7fc0403e345292548b8ff2e8ca515581, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4508671383449874, guid: 7fc0403e345292548b8ff2e8ca515581, type: 2}
       propertyPath: m_LocalScale.x
@@ -1132,7 +1132,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1155,7 +1155,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0.08, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1449047657}
@@ -1736,7 +1736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj:
   - {fileID: 1074085227246876, guid: 2a8cc0af83718457db62b2a122cd526e, type: 2}
-  - {fileID: 1799705798256652, guid: 86817a4420ba64de5bf0b56bf45940f5, type: 2}
+  - {fileID: 1427477331097242, guid: 86817a4420ba64de5bf0b56bf45940f5, type: 2}
   tiempoMin: 1.5
   tiempoMax: 2
   cam: {fileID: 550766324}

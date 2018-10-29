@@ -29,9 +29,18 @@ public class MovingEnemy : MonoBehaviour
     {
         transform.Translate(movementPerSecond);
         if (transform.position.x <= -10f || transform.position.x >= 10f)
-           
-             
-        SwitchVector();
+        {
+            if (transform.position.x < 0)
+            {
+                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
+            }
+            SwitchVector();
+        }
+
         if (transform.position.y <= MainCamera.posY - 10)
         {
             Destroy(gameObject);
@@ -56,8 +65,18 @@ public class MovingEnemy : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Enviroment")
+        if (col.gameObject.tag == "Enviroment" || col.gameObject.tag == "Floor")
         {
+
+            if (transform.position.x < 0)
+            {
+                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
+            }
+
             SwitchVector();
 
 
@@ -66,20 +85,22 @@ public class MovingEnemy : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Enviroment")
+        if (col.gameObject.tag == "Enviroment" || col.gameObject.tag == "Floor")
         {
-            SwitchVector();
 
-            if (transform.position.x <= 0)
+            if (transform.position.x < 0)
             {
-                transform.position = new Vector3(transform.position.x + 4f, transform.position.y, transform.position.z);
-                Debug.Log(transform.position.x);
+                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
             }
             else
             {
-                transform.position = new Vector3(transform.position.x - 4f, transform.position.y, transform.position.z);
+                transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
             }
-            Debug.Log("hola");
+
+            SwitchVector();
+
+
         }
     }
+
 }
