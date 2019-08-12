@@ -6,81 +6,76 @@ public class MovingEnemy : MonoBehaviour
 {
 
     public static bool killActive = true;
-    public float enemyVelocity = 0.1f;
+    public float speed = 0;
     public static float damage = 1.5f;
-    private float counter=1f;
-
-    private int xDir;
+    public float orientation = 1;
+    private float counter = 0.1f;
+   
     private Vector2 movementDirection;
     private Vector2 movementPerSecond;
 
     private Animator anim;
     private SpriteRenderer rend;
+    private Rigidbody2D rb;
 
     // Use this for initialization
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        CalcuateNewMovementVector();
+        rb = GetComponent<Rigidbody2D>();
+        counter = 0.1f;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        transform.Translate(movementPerSecond);
-        if (transform.position.x <= -10f || transform.position.x >= 10f)
-        {
-            if (transform.position.x < 0)
-            {
-                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
-            }
-            else
-            {
-                transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
-            }
-            SwitchVector();
-        }
-
         if (transform.position.y <= MainCamera.posY - 10)
         {
             Destroy(gameObject);
         }
-    }
 
-    void SwitchVector()
-    {
-        movementPerSecond = -movementPerSecond;
-        xDir = -xDir;
-        transform.localScale = new Vector3(xDir * 4f, 4f, 1f);
-    }
+        rb.velocity = new Vector2(orientation * speed, rb.velocity.y);
 
-    void CalcuateNewMovementVector()
-    {
-        //create a random direction vector with the magnitude of 1, later multiply it with the velocity of the enemy
-        xDir = Random.Range(-1, 1) > 0 ? 1 : -1;
-        transform.localScale = new Vector3(xDir * 4f, 4f, 1f);
-        movementDirection = new Vector2(xDir, 0).normalized;
-        movementPerSecond = movementDirection * enemyVelocity;
+        if (orientation > 0.1f)
+        {
+            transform.localScale = new Vector3(5f, 5f, 1f);
+        }
+
+        if (orientation < -0.1f)
+        {
+            transform.localScale = new Vector3(-5f, 5f, 1f);
+        }
+
+        if (transform.position.x <= -10f || transform.position.x >= 10f)
+        {
+
+            if (orientation > 0)
+            {
+                transform.position = new Vector3(9.5f, transform.position.y, transform.position.z);
+                orientation = -1;
+            }
+            else if (orientation < 0)
+            {
+                transform.position = new Vector3(-9.5f, transform.position.y, transform.position.z);
+                orientation = 1;
+            }
+        }
+        
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == "Enviroment" || col.gameObject.tag == "Floor")
         {
-
-            if (transform.position.x < 0)
-            {
-                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
+            if (orientation > 0)
+            {              
+                orientation = -1;
             }
-            else
-            {
-                transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
+            else if (orientation < 0)
+            {                
+                orientation = 1;
             }
-
-            SwitchVector();
-
-
         }
     }
 
@@ -93,18 +88,20 @@ public class MovingEnemy : MonoBehaviour
             {
                 if (transform.position.x < 0)
                 {
-                    transform.position = new Vector3(transform.position.x + 4f, transform.position.y, transform.position.z);
+                    transform.position = new Vector3(0, transform.position.y + 1f, transform.position.z);
                 }
                 else
                 {
-                    transform.position = new Vector3(transform.position.x - 4f, transform.position.y, transform.position.z);
+                    transform.position = new Vector3(0, transform.position.y + 1f, transform.position.z);
                 }
-                counter = 1f;
+                counter = 0.1f;
             }
-            SwitchVector();
 
 
         }
+        else
+        {
+            counter = 0.1f;
+        }
     }
-
 }

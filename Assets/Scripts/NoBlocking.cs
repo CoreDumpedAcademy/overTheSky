@@ -33,13 +33,11 @@ public class NoBlocking : MonoBehaviour {
             if (transform.position.x <= 0)
             {
                 transform.position = new Vector3(transform.position.x + 4f, transform.position.y, transform.position.z);
-                Debug.Log(transform.position.x);
             }
             else
             {
                 transform.position = new Vector3(transform.position.x - 4f, transform.position.y, transform.position.z);
             }
-            Debug.Log("hola");
         }
     }
 }

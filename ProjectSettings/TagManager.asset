@@ -8,6 +8,9 @@ TagManager:
   - Enviroment
   - Enemy
   - FlyingEnemy
+  - Music
+  - Coin
+  - MainMenuMusic
   layers:
   - Default
   - TransparentFX
@@ -44,4 +47,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Coins
+    uniqueID: 2290884257
+    locked: 0
+  - name: HealthBar
+    uniqueID: 1989640723
     locked: 0

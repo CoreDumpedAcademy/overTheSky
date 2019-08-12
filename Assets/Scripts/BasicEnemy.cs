@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BasicEnemy : MonoBehaviour
 {
-    public static bool killActive;
+    private bool killActive = false;
     public float killActiveTime = 3f;
     public static float damage = 1;
 
@@ -17,50 +17,40 @@ public class BasicEnemy : MonoBehaviour
     {
         spriteRend = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-
-        timer = killActiveTime;
-        if (Random.Range(0f, 10f) >= 5)
-        {
-            killActive = true;
-            anim.SetTrigger("Spikes");
-        }
-        else
-        {
-            killActive = false;
-        }
     }
 
 
     void Update()
     {
-        Timer();
         if (transform.position.y <= MainCamera.posY - 10)
         {
             Destroy(gameObject);
         }
 
-    }
-
-    void Timer()
-    {
-        
-        if (Player_Movement.timer <= 0)
+        killActiveTime = killActiveTime - Time.deltaTime;
+        if (killActiveTime <= 0)
         {
-            
             if (killActive)
             {
-                anim.SetTrigger("Spikes");
+                anim.SetBool("Spikes", false);              
             }
             else
             {
-                anim.SetTrigger("Idle");
+                anim.SetBool("Spikes", true);               
             }
-            
+            killActive = !killActive;
+            killActiveTime = 3f;
         }
+
+        if (killActive)
+        {
+            spriteRend.color = Color.red;
+        }
+        else
+        {
+            spriteRend.color = Color.white;
+        }
+
     }
 
-    void OnCollisionStay2D(Collision2D col)
-    {
-        
-    }
 }

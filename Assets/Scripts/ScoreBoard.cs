@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class ScoreBoard : MonoBehaviour {
 
 
-    
 
-    public static int scoreV1;
-    public static int scoreV2;
-    public static int scoreV3;
-    public static int scoreV4;
-    public static int scoreV5;
+
+    public Text score1;
+    public Text score2;
+    public Text score3;
+    public Text score4;
+    public Text score5;
 
     public static int scoreCount;
 
@@ -31,13 +31,11 @@ public class ScoreBoard : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        
-
-        Score1.score1.text = "" + scoreV1;
-        Score2.score2.text = "" + scoreV2;
-        Score3.score3.text = "" + scoreV3;
-        Score4.score4.text = "" + scoreV4;
-        Score5.score5.text = "" + scoreV5;
+        score1.text = "" + PauseMenu.scoreArray[0];
+        score2.text = "" + PauseMenu.scoreArray[1];
+        score3.text = "" + PauseMenu.scoreArray[2];
+        score4.text = "" + PauseMenu.scoreArray[3];
+        score5.text = "" + PauseMenu.scoreArray[4];
 
     }
 

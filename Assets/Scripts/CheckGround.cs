@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class CheckGround : MonoBehaviour {
 
     private Player_Movement player;
-
+    private int multiplier;
     
 
 	// Use this for initialization
 	void Start () {
 
         player = GetComponentInParent<Player_Movement>();
+        multiplier = LoadMultiplier();
 	}
 
     void OnCollisionEnter2D(Collision2D col)
@@ -30,14 +31,14 @@ public class CheckGround : MonoBehaviour {
     void OnCollisionStay2D(Collision2D col)
     {
         float timer = 3f;
+        timer = timer - Time.deltaTime;
         if (timer <= 0 && col.gameObject.tag == "Enviroment")
-        {
+        {      
             
-            timer = timer - Time.deltaTime;
             transform.position = new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z);
-            
+            timer = 3f;
         }
-        timer = 3f;
+        
         player.grounded |= col.gameObject.tag == "Floor";
         player.grounded &= col.gameObject.tag != "FlyingEnemy";
     }
@@ -49,7 +50,20 @@ public class CheckGround : MonoBehaviour {
         
     }
 
-   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Coin")
+        {
+            Player_Movement.coins = Player_Movement.coins + multiplier;
+        }
+    }
+
+    public int LoadMultiplier()
+    {
+        MultiplierData data = new MultiplierData(SaveSystem.LoadMultiplier().multiplier);
+
+        return data.multiplier;
+    }
 
 
 }

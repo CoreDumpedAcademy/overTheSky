@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
+using System;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -9,19 +13,33 @@ public class Player_Movement : MonoBehaviour
     public float speed = 6f;
     public float jumpPower = 6f;
     public bool grounded;
-    public float lifes = 3f;
+    public static float maxHealth;
+    private float health;
     public static bool isDead;
     public static int scoreValue;
+    public static int realScoreValue;
+    public static int coins;
     private int heigthDetect;
-    public static int scores;
     public static bool toAddScore=false;
     public static float timer = 3f;
-
-
+    public static bool addScore;
+    private float actualHealth = 0;
+    private float ScreenWidth;
+    private bool kiss;
+    public GameObject LifeCount;
+    private TextMeshProUGUI lifeCount;
 
     Rigidbody2D rb2d;
     private Animator anim;
     private SpriteRenderer spriteRend;
+    public GameObject healthBar;
+
+    private float animCounter;
+
+    public ParticleSystem part1;
+    public ParticleSystem part2;
+
+    private int scoreMultiplier;
 
     // Use this for initialization
     void Start()
@@ -30,44 +48,96 @@ public class Player_Movement : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         scoreValue = (int)transform.position.y + 3;
+        health = LoadHealth();
+        ScreenWidth = Screen.width;
+        maxHealth = LoadHealth();
+        coins = LoadCoins();
+        lifeCount = LifeCount.GetComponent<TextMeshProUGUI>();
+        scoreMultiplier = LoadScoreMultiplier();
 
+        animCounter = 0.8f;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        timer = timer - Time.deltaTime;
-        if (timer <= 0)
+        if(health >= 0)
         {
-            BasicEnemy.killActive = !BasicEnemy.killActive;
-            timer = 3f;
+            lifeCount.text = health.ToString();
+        }
+        else
+        {
+            lifeCount.text = "0";
+        }
+        
+
+        #if UNITY_EDITOR
+        RunCharacter(Input.GetAxis("Horizontal"));
+        #endif
+
+        animCounter -= Time.deltaTime;
+
+        if (animCounter  <= 0)
+        {
+            anim.SetFloat("SpeedY", 1);
+            part1.Play();
+            part2.Play();
+            animCounter = 0.8f;
+        }
+        else
+        {
+            anim.SetFloat("SpeedY", -1);
         }
 
-        float horizontal = Input.GetAxis("Horizontal");
-        rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
+        
 
-        if (lifes <= 0)
+        int i = 0;
+        //loop over every touch found
+        while (i < Input.touchCount)
+        {
+            if (Input.GetTouch(i).position.x > ScreenWidth / 2)
+            {
+                //move right
+                RunCharacter(1.0f);
+                transform.localScale = new Vector3(3f, 3f, 3f);
+            }
+            else if (Input.GetTouch(i).position.x < ScreenWidth / 2)
+            {
+                //move left
+                RunCharacter(-1.0f);
+                transform.localScale = new Vector3(-3f, 3f, 3f);
+            }
+
+            if (Input.GetTouch(i).phase == TouchPhase.Canceled || Input.GetTouch(i).phase == TouchPhase.Ended)
+            {
+                RunCharacter(0f);
+            }
+            ++i;
+        }
+
+        
+
+        actualHealth = health / maxHealth;
+        
+        if(health >= 0)
+        {
+            healthBar.transform.localScale = new Vector3(actualHealth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+        }
+        else
+        {
+            healthBar.transform.localScale = new Vector3(0, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+        }
+        
+
+        if (health <= 0)
         {
             Die();
-            
-            Debug.Log("Killed");
-            lifes = 10;
+            health = LoadHealth();
         }
+
         if (grounded == true)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
-        }
-
-
-        if (horizontal > 0.1f)
-        {
-            transform.localScale = new Vector3(3f, 3f, 3f);
-        }
-
-        if (horizontal < -0.1f)
-        {
-            transform.localScale = new Vector3(-3f, 3f, 3f);
         }
 
         if (transform.position.x <= -11f)
@@ -79,8 +149,6 @@ public class Player_Movement : MonoBehaviour
             transform.position = new Vector3(-10.5f, transform.position.y + 1f, transform.position.z);
         }
 
-        anim.SetFloat("SpeedY", rb2d.velocity.y);
-
         if (transform.position.y <= MainCamera.posY - 8f)
         {
             Die();
@@ -89,9 +157,9 @@ public class Player_Movement : MonoBehaviour
         if (transform.position.y >= 0)
         {
             
-            if (PauseMenu.scoreText < transform.position.y)
+            if (PauseMenu.scoreText < (transform.position.y * scoreMultiplier))
             {
-                scoreValue = (int)transform.position.y;
+                scoreValue = (int)(transform.position.y * scoreMultiplier);
             }
             
 
@@ -101,183 +169,82 @@ public class Player_Movement : MonoBehaviour
 
     void Die()
     {
-        scores = scoreValue;
+        SaveCoins(coins);
+        Array.Sort(PauseMenu.scoreArray);
+        Array.Reverse(PauseMenu.scoreArray);
+
+        Debug.Log(PauseMenu.scoreArray);
+        if (scoreValue > PauseMenu.scoreArray[4])
+        {
+            PauseMenu.scoreArray[4] = scoreValue;
+            Array.Sort(PauseMenu.scoreArray);
+            Array.Reverse(PauseMenu.scoreArray);
+            Debug.Log(PauseMenu.scoreArray[4]);
+
+        }
         toAddScore = true;
+        addScore = true;
         isDead = true;
-        PauseMenu.addScore = true;
         gameObject.SetActive(false);
-        if (Player_Movement.toAddScore == true)
-        {
-            PauseMenu.addScore = true;
-            Player_Movement.toAddScore = false;
-        }
-
-        ScoreBoard.scoreV1 = PlayerPrefs.GetInt("Score1", 0);
-        ScoreBoard.scoreV2 = PlayerPrefs.GetInt("Score2", 0);
-        ScoreBoard.scoreV3 = PlayerPrefs.GetInt("Score3", 0);
-        ScoreBoard.scoreV4 = PlayerPrefs.GetInt("Score4", 0);
-        ScoreBoard.scoreV5 = PlayerPrefs.GetInt("Score5", 0);
-
-        if (PauseMenu.addScore == true)
-        {
-            ScoreBoard.scoreCount = PlayerPrefs.GetInt("scoreCount", 0);
-
-
-            switch (ScoreBoard.scoreCount)
-            {
-                case 0:
-                    PlayerPrefs.SetInt("Score1", Player_Movement.scores);
-
-                    break;
-
-                case 1:
-
-                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
-                    {
-                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
-                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
-                    }
-                    else
-                    {
-                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
-
-                    }
-
-                    break;
-
-                case 2:
-
-                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
-                    {
-
-                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
-                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
-                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores >= ScoreBoard.scoreV1)
-                    {
-
-                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
-                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV1)
-                    {
-                        PlayerPrefs.SetInt("Score3", Player_Movement.scores);
-                    }
-
-                    break;
-
-                case 3:
-
-                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
-                    {
-
-                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
-                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
-                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
-                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores >= ScoreBoard.scoreV2)
-                    {
-                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
-                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
-                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores >= ScoreBoard.scoreV3)
-                    {
-                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
-                        PlayerPrefs.SetInt("Score3", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3)
-                    {
-                        PlayerPrefs.SetInt("Score4", Player_Movement.scores);
-                    }
-
-
-
-
-                    break;
-
-                case 4:
-
-                    if (Player_Movement.scores >= ScoreBoard.scoreV1)
-                    {
-
-                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
-                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
-                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
-                        PlayerPrefs.SetInt("Score2", ScoreBoard.scoreV1);
-                        PlayerPrefs.SetInt("Score1", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores >= ScoreBoard.scoreV1)
-                    {
-
-                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
-                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
-                        PlayerPrefs.SetInt("Score3", ScoreBoard.scoreV2);
-                        PlayerPrefs.SetInt("Score2", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores >= ScoreBoard.scoreV3)
-                    {
-                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
-                        PlayerPrefs.SetInt("Score4", ScoreBoard.scoreV3);
-                        PlayerPrefs.SetInt("Score3", Player_Movement.scores);
-
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3 && Player_Movement.scores >= ScoreBoard.scoreV4)
-                    {
-                        PlayerPrefs.SetInt("Score5", ScoreBoard.scoreV4);
-                        PlayerPrefs.SetInt("Score4", Player_Movement.scores);
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3 && Player_Movement.scores < ScoreBoard.scoreV4 && Player_Movement.scores > ScoreBoard.scoreV5)
-                    {
-                        PlayerPrefs.SetInt("Score5", Player_Movement.scores);
-                    }
-                    else if (Player_Movement.scores < ScoreBoard.scoreV1 && Player_Movement.scores < ScoreBoard.scoreV2 && Player_Movement.scores < ScoreBoard.scoreV3 && Player_Movement.scores < ScoreBoard.scoreV4 && Player_Movement.scores < ScoreBoard.scoreV5)
-                    {
-
-                    }
-
-
-                    ScoreBoard.scoreCount = 3;
-                    break;
-
-            }
-            ScoreBoard.scoreCount = ScoreBoard.scoreCount + 1;
-            PlayerPrefs.SetInt("scoreCount", ScoreBoard.scoreCount);
-
-            Debug.Log("Ayer");
-
-            ScoreBoard.scoreV1 = PlayerPrefs.GetInt("Score1", 0);
-            ScoreBoard.scoreV2 = PlayerPrefs.GetInt("Score2", 0);
-            ScoreBoard.scoreV3 = PlayerPrefs.GetInt("Score3", 0);
-            ScoreBoard.scoreV4 = PlayerPrefs.GetInt("Score4", 0);
-            ScoreBoard.scoreV5 = PlayerPrefs.GetInt("Score5", 0);
-
-            PauseMenu.addScore = false;
-        }
-        Debug.Log("Moñeco");
+        
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Enemy" && BasicEnemy.killActive)
+        if (col.gameObject.tag == "Enemy" && col.gameObject.GetComponent<Animator>().GetBool("Spikes"))
         {
             anim.SetTrigger("PlayerDamaged");
-            lifes -= BasicEnemy.damage;
+            health -= BasicEnemy.damage;
         }
+
         if (col.gameObject.tag == "FlyingEnemy")
         {
             anim.SetTrigger("PlayerDamaged");
-            lifes -= MovingEnemy.damage;
+            health -= MovingEnemy.damage;
 
         }
     }
+
+    private void RunCharacter(float horizontal)
+    {
+        //move player
+        rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
+
+    }
+
+    public int LoadHealth()
+    {
+        HealthData data = new HealthData(SaveSystem.LoadHealth().health);
+        return data.health;
+    }
+
+    public void SaveHealth(int info)
+    {
+        SaveSystem.SaveHealth(info);
+    }
+
+    public int LoadCoins()
+    {
+        CoinsData data = new CoinsData(SaveSystem.LoadCoins().coins);
+        Debug.Log(data);
+        return data.coins;
+    }
+
+    public void SaveCoins(int info)
+    {
+        SaveSystem.SaveCoins(info);
+    }
+
+    public int LoadScoreMultiplier()
+    {
+        ScoreMultiplierData data = new ScoreMultiplierData(SaveSystem.LoadScoreMultiplier().scoreMultiplier);
+
+        return data.scoreMultiplier;
+    }
+
+    public void SaveScoreMultiplier(int info)
+    {
+        SaveSystem.SaveScoreMultiplier(info);
+    }
+
 }
