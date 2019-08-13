@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PauseMenu : MonoBehaviour {
 
@@ -159,6 +160,18 @@ public class PauseMenu : MonoBehaviour {
     public void Restart(){
 
         SaveCoins(Player_Movement.coins);
+
+        Array.Sort(scoreArray);
+        Array.Reverse(scoreArray);
+
+        if (Player_Movement.scoreValue > scoreArray[4])
+        {
+            scoreArray[4] = Player_Movement.scoreValue;
+            Array.Sort(scoreArray);
+            Array.Reverse(scoreArray);
+
+        }
+
         SaveData();
         restartTime = 0.2f;
         PlayerIsDead = false;
@@ -191,6 +204,18 @@ public class PauseMenu : MonoBehaviour {
     public void QuitGame()
     {
         SaveCoins(Player_Movement.coins);
+
+        Array.Sort(scoreArray);
+        Array.Reverse(scoreArray);
+
+        if (Player_Movement.scoreValue > scoreArray[4])
+        {
+            scoreArray[4] = Player_Movement.scoreValue;
+            Array.Sort(scoreArray);
+            Array.Reverse(scoreArray);
+
+        }
+
         SaveData();
 
         Application.Quit();
